@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vue Basics</title>
+  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <header>
+    <h1>Monster Slayer</h1>
+  </header>
+  <div id="app">
+    <div class="bg-image">
+      <div >
+        <div class="overlay_menu top" :style="styleOverlayTop"></div>
+        <div class="overlay_menu bottom" :style="styleOverlayBottom"></div>
+        <img class="start top" @click="startGame" :style="styleStartTop" src="images/top_Start.png" alt="">
+        <img class="start bottom" @click="startGame" :style=" styleStartBottom"  src="images/bottom_Start.png" alt="">
+      </div>
+     
+      <div class="container">
+        <div class="item" id="user">
+          <p class="damgeuser" :class="{'open': animate}">-{{monsterDamage}}</p>
+          <div class="heart-wrap">
+            <div :style="{width: userHeart + '%'}" class="heart"></div>
+          </div>
+          <img src="./images/user-01.png" class="warrior-img" :class="{attack: isAttack}" alt="">
+          <img class="bubble" v-for="n in 10" src="images/health-icon-removebg-preview.png" :class="[{active: isActiveBubble},`x${n}`]" alt="">
+        </div>
+        <div class="item" id="monster">
+          <p class="damge" :class="{'open': animate}">-{{userDamage}}</p>
+          <div class="heart-wrap">
+            <div :style="{width: monsterHeart + '%'}" class="heart"></div>
+          </div>
+          <img src="./images/monster-01.png" alt="" class="monster-img" :class="{attacked: isAttacked}">
+        </div>
+      </div>
+      <div class="controls" >
+        <button v-if="!isFighting" @click="userAttack" v-show="handlebtn">Attack</button>
+        <button v-if="!isFighting" :disabled="canUseBuff" @click="userBuff" v-show="handlebtn">Buff</button>
+        <button v-if="!isFighting" :disabled="canUseSpecialAttack" @click="specialAttackMonster" v-show="handlebtn">Special attack</button>
+        <button v-if="!isFighting" @click="surrender" v-show="handlebtn">Surrender</button>
+      </div>
+      <div class="end-game" v-if="headleEnd1">
+        <img src="./images/winner-01.png" alt="">
+        <button @click="startNewGame">Start New Game</button>
+      </div>
+      <div class="end-game2" v-else-if="headleEnd2">
+        <img src="./images/loser-01.png" alt="">
+        <button @click="startNewGame">Start New Game</button>
+      </div>
+    </div>
+  </div>
+  <script src="https://unpkg.com/vue@next"></script>
+  <script src="app.js"></script>
+</body>
+
+</html>
