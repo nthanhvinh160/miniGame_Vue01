@@ -33,6 +33,12 @@ section {
   display: flex;
   justify-content: space-around;
 }
+
+.container {
+  padding-top: 100px;
+  display: flex;
+  justify-content: space-around;
+}
 .overlay_menu.top{
   width: 100%;
   top: 0;
@@ -90,12 +96,61 @@ section {
   color: #ff1919e0;
   font-weight: 600;
 }
-.warrior-img.attack {
-  animation: fadeinLeft 0.8s ease-in-out;
+.more_heart {
+  position: absolute;
+  opacity: 0;
+  top: 19%;
+  left: 24%;
+  font-size: 25px;
+  color: #3cff00e0;
+  font-weight: 600;
 }
 
-.monster-img.attacked {
-  animation: tada 0.6s ease-in-out;
+
+#monster{
+  position: relative;
+}
+#user{
+  position: relative;
+}
+.monster-img.active {
+  animation: monsterMove 0.3s;
+}
+.warrior-img.damged{
+  animation: blinkblink 0.7s linear infinite, fadeUp 0.7s linear infinite;
+}
+.item .fire_ball{
+  opacity: 0;
+}
+.item .fire_ball.open{
+  animation: fadeinRightBall 1.5s;
+}
+
+.item .sword{
+  width: 50px;
+  height: 30px;
+  position: absolute;
+  top: 52%;
+  right: 20px;
+  opacity: 0;
+}
+.item .sword.bigUp{
+  right: -40px;
+  opacity: 1;
+  transform: scale(4.7);
+  transition: 0.5s ease-in-out;
+}
+.item .sword.bigUp.active{
+ animation: fadeinLeft2 1s ease-in-out;
+ animation-delay: 1s;
+}
+
+.item .fire_ball {
+  width: 60px;
+  height: 60px;
+  position: absolute;
+  top: 40%;
+  left: 0;
 }
 
 .damgeuser.open {
@@ -106,6 +161,10 @@ section {
   opacity: 0;
   animation: fadein 1.2s ease-in-out;
 }
+.more_heart.open {
+  opacity: 0;
+  animation: fadein 0.8s ease-in-out;
+}
 .heart-wrap {
   border: 1px solid;
   margin-bottom: 80px;
@@ -114,6 +173,19 @@ section {
   width: 230px;
   height: 270px;
 }
+
+.warrior-img.attack {
+  animation: fadeinLeft 0.8s ease-in-out;
+}
+
+
+.monster-img.attacked {
+  animation: tada 0.6s ease-in-out;
+}
+.monster-img.active {
+  animation: monsterMove 0.6s ease-in-out;
+}
+
 .item .img-monster {
   width: 325px;
   height: 395px;
@@ -209,15 +281,15 @@ button:disabled {
 
 .x2 {
 
-  left: 25%;
+  left: 8%;
   top: 50%;
   transform: scale(0.5);
 
 }
 
 .x3 {
-  left: 20%;
-  top: 45%;
+  left: 60%;
+  top: 15%;
   transform: scale(0.5);
 
 }
@@ -232,28 +304,28 @@ button:disabled {
 .x5 {
 
   left: 30%;
-  top: 50%;
+  top: 60%;
   transform: scale(0.6);
 
 }
 
 .x6 {
-  left: 25%;
+  left: 45%;
   top: 35%;
   transform: scale(0.6);
 
 }
 
 .x7 {
-  left: 25%;
+  left: 55%;
   top: 50%;
   transform: scale(0.6);
 
 }
 
 .x8 {
-  left: 30%;
-  top: 17%;
+  left: 55%;
+  top: 30%;
   transform: scale(0.6);
 
 }
@@ -266,7 +338,7 @@ button:disabled {
 }
 
 .x10 {
-  left: 25%;
+  left:35%;
   top: 20%;
   transform: scale(0.6);
 
@@ -286,6 +358,25 @@ button:disabled {
   }
 }
 
+@keyframes fadeinLeft2 {
+  from {
+    transform: scale(4.7) translateX(0);
+  }
+
+  to {
+    transform:scale(4.7) translateX(600px);
+  }
+}
+
+@keyframes fadeinRight {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-800px);
+  }
+}
 @keyframes fadeinLeft {
   from {
     transform: translateX(0);
@@ -341,6 +432,103 @@ button:disabled {
 
 /* ------------------------------ */
 
+@keyframes fadein {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeinLeft {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(700px);
+  }
+}
+@keyframes bigger{
+  from{
+    opacity: 0;
+    transform: scale(0);
+  }
+  to{
+    opacity: 1;
+    transform: scale(4.7);
+  }
+}
+
+@keyframes fadeinRightBall {
+  0% {
+    transform: translateX(-20px);
+    opacity: 1;
+  }
+  10%, 
+  20%,
+  30%,
+  40%, 
+  50%{
+    transform: scale(1.5) translateX(-150px);
+    opacity: 1;
+  }
+  100%{
+    transform:scale(2.5) translateX(-250px);
+    opacity: 1;
+  }
+}
+@keyframes fadeUp{
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translate(-20px,-10px);
+  }
+}
+@keyframes blinkblink{
+  0% {
+    opacity: 0.2;
+  }
+  20% {
+    opacity: 0.8;
+  }
+  40% {
+    opacity: 0.2;
+  }
+  60% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes fadeinRight {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-650px);
+  }
+}
+@keyframes monsterMove{
+  from{
+    transform: translateX(50px);
+  }
+  to{
+    transform: translateX(0);
+  }
+}
+
+
+/* ------------------------------ */
+
 @-webkit-keyframes animateBubble {
   0% {
     margin-top: 100px;
@@ -351,7 +539,6 @@ button:disabled {
     margin-top: -200px;
   }
 }
-
 @-moz-keyframes animateBubble {
   0% {
     margin-top: 100px;

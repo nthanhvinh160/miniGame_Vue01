@@ -11,11 +11,17 @@ const app = Vue.createApp({
       monsterDamage: 0,
       healHeart: 0,
       round: 0,
+      healAnimate: false,
       isFighting: false,
       animate: false,
       isAttack: false, // animate cho User
       isAttacked: false, // animate cho Quai Vat
       isActiveBubble: false, // animate Heal
+      isBigger: false, // animate Kiem xuat hien
+      isSlide: false, // animate Kiem bay
+      isAppear: false, // animate Fire-Ball xuat hien
+      isFire: false, // Quai vat khac lua
+      isUserDameged: false, // kich hoat hinh anh nguoi trung skill
       styleStartTop: {
         left: '',
       },
@@ -28,7 +34,6 @@ const app = Vue.createApp({
       styleOverlayBottom: {
         right: '',
       },
-      
     };
   },
   methods: {
@@ -62,7 +67,7 @@ const app = Vue.createApp({
     },
     userBuff() {
       this.round++;
-      this.healHeart = getRandomValue(10,20);
+      this.healHeart = getRandomValue(15,25);
       this.isActiveBubble = true;  //Bat animation Heal
       setTimeout(() => {
         this.isActiveBubble = false;
@@ -75,32 +80,51 @@ const app = Vue.createApp({
           console.log("heal: " + this.healHeart);
         }, 500);
       }
-      this.animate = true;
+      this.healAnimate = false;
       setTimeout(() => {
         this.monsterAttack();
+        this.healAnimate = true;
       }, 200);
     },
     specialAttackMonster() {
       this.round++;
-      const attackValue = getRandomValue(15, 30);
-      this.monsterHeart -= attackValue;
       this.isFighting = true;
+      this.userDamage = getRandomValue(15, 30);
+      this.monsterHeart -= this.userDamage;
+      console.log("user: " + this.userDamage);
+      this.animate = false;
+      this.specialAttackAnimationForUser();
+     
       setTimeout(() => {
         this.monsterAttack();
-      }, 200);
+        setTimeout(() => {this.specialAttackAnimationForMonster();},1000);
+      }, 1290);
     },
     surrender() {
       this.userHeart = 0;
     },
+    specialAttackAnimationForUser(){
+      this.isBigger = true;
+      setTimeout(() => {this.isBigger = false},2000)
+      setTimeout(() => {this.isAttack = true},900)
+      setTimeout(() => {this.isAttack = false},2000)
+      this.isSlide = true;
+    },
+    specialAttackAnimationForMonster(){
+      this.isAppear = true;
+      setTimeout(() => {this.isFire = true}, 50)
+      setTimeout(() => {this.isAppear = false}, 1800)     
+      setTimeout(() => {this.isUserDameged = true},1500)
+      setTimeout(() => {this.isUserDameged = false},2200)
+    },
     startGame(e){
       this.styleOverlayTop.left = '-100%';
       this.styleOverlayBottom.right = '-100%';
-      this.styleStartTop.left = '-42.09%';
-      this.styleStartBottom.right = '-42.09%';
+      this.styleStartTop.left = '-100%';
+      this.styleStartBottom.right = '-100%';
     },
   },
   computed: {
-    
     canUseBuff() {
       return this.round < 1;
     },

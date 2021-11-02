@@ -21,22 +21,25 @@
         <img class="start top" @click="startGame" :style="styleStartTop" src="images/top_Start.png" alt="">
         <img class="start bottom" @click="startGame" :style=" styleStartBottom"  src="images/bottom_Start.png" alt="">
       </div>
-     
+
       <div class="container">
         <div class="item" id="user">
-          <p class="damgeuser" :class="{'open': animate}">-{{monsterDamage}}</p>
+          <p class="damgeuser" :class="{'open': animate}"> -{{monsterDamage}}</p>
+          <p class="more_heart" :class="{'open': healAnimate}" > +{{healHeart}}</p>
           <div class="heart-wrap">
             <div :style="{width: userHeart + '%'}" class="heart"></div>
           </div>
-          <img src="./images/user-01.png" class="warrior-img" :class="{attack: isAttack}" alt="">
+          <img src="./images/user-01.png" class="warrior-img" :class="{attack: isAttack, damged: isUserDameged}" alt="">
           <img class="bubble" v-for="n in 10" src="images/health-icon-removebg-preview.png" :class="[{active: isActiveBubble},`x${n}`]" alt="">
+          <img src="images/kiem-01.png" class="sword" :class="{'bigUp': isBigger, 'active': isSlide}" alt="">
         </div>
         <div class="item" id="monster">
           <p class="damge" :class="{'open': animate}">-{{userDamage}}</p>
           <div class="heart-wrap">
             <div :style="{width: monsterHeart + '%'}" class="heart"></div>
           </div>
-          <img style="width: 284px; height: 307px;" src="./images/monster-01.png" alt="" class="monster-img" :class="{attacked: isAttacked}">
+          <img style="width: 284px; height: 307px;" src="./images/monster-01.png" alt="" class="monster-img" :class="{attacked: isAttacked, 'active': isFire}">
+          <img src="images/fire_ball.png" class="fire_ball" :class="{'open': isAppear}" alt="">
         </div>
       </div>
       <div class="controls" >
