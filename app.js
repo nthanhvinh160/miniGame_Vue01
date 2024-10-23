@@ -1,8 +1,12 @@
+
+
 function getRandomValue(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
-const app = Vue.createApp({
+// Create a new Vue instance
+new Vue({
+  el: '#app', // Mount the Vue instance to the HTML element with id 'app'
   data() {
     return {
       userHeart: 100,
@@ -14,14 +18,14 @@ const app = Vue.createApp({
       healAnimate: false,
       isFighting: false,
       animate: false,
-      isAttack: false, // animate cho User
-      isAttacked: false, // animate cho Quai Vat
+      isAttack: false, // animate for User
+      isAttacked: false, // animate for Monster
       isActiveBubble: false, // animate Heal
-      isBigger: false, // animate Kiem xuat hien
-      isSlide: false, // animate Kiem bay
-      isAppear: false, // animate Fire-Ball xuat hien
-      isFire: false, // Quai vat khac lua
-      isUserDameged: false, // kich hoat hinh anh nguoi trung skill
+      isBigger: false, // animate Sword appearance
+      isSlide: false, // animate Sword flying
+      isAppear: false, // animate Fire-Ball appearance
+      isFire: false, // Monster fire attack
+      isUserDamaged: false, // activate user damage skill image
       styleStartTop: {
         left: '',
       },
@@ -40,7 +44,6 @@ const app = Vue.createApp({
     startNewGame() {
       this.userHeart = 100;
       this.monsterHeart = 100;
-      this.winner = null;
       this.round = 0;
     },
     userAttack() {
@@ -49,8 +52,8 @@ const app = Vue.createApp({
       this.userDamage = getRandomValue(5, 10);
       this.monsterHeart -= this.userDamage;
       console.log("user: " + this.userDamage);
-      this.isAttack = true; // nhan vat tan cong
-      this.isAttacked = false; // trang thai quai vat bi. tan cong
+      this.isAttack = true; // user attacking
+      this.isAttacked = false; // monster being attacked
       this.animate = false;
       setTimeout(() => {
         this.monsterAttack();
@@ -62,62 +65,82 @@ const app = Vue.createApp({
       this.animate = true;
       this.userHeart -= this.monsterDamage;
       this.isFighting = false;
-      this.isAttack = false; // nhan vat tan cong
-      this.isAttacked = true; // trang thai quai vat bi. tan cong
+      this.isAttack = false; // user attacking
+      this.isAttacked = true; // monster being attacked
     },
     userBuff() {
       this.round++;
-      this.healHeart = getRandomValue(15,25);
-      this.isActiveBubble = true;  //Bat animation Heal
+      this.healHeart = getRandomValue(15, 25);
+      this.isActiveBubble = true;  // Start Heal animation
       setTimeout(() => {
-        this.isActiveBubble = false;
-      },1000); //Tat animation Heal
-      if(this.userHeart + this.healHeart > 100) {
-        this.userHeart = 100;
-      } else {
-        setTimeout(() => {
+        this.isActiveBubble = false; // End Heal animation
+      }, 1000);
+
+      // Only heal if userHeart is less than 100
+      if (this.userHeart < 100) {
+
+        // Check again if the heal would push userHeart beyond 100
+        if (this.userHeart + this.healHeart > 100) {
+          this.userHeart = 100;
+        } else {
           this.userHeart += this.healHeart;
           console.log("heal: " + this.healHeart);
-        }, 500);
+        }
+
       }
+
       this.healAnimate = false;
       setTimeout(() => {
-        this.monsterAttack();
+
         this.healAnimate = true;
       }, 200);
     },
+
     specialAttackMonster() {
       this.round++;
       this.isFighting = true;
-      this.userDamage = getRandomValue(15, 30);
+      this.userDamage = getRandomValue(20, 30);
       this.monsterHeart -= this.userDamage;
-      console.log("user: " + this.userDamage);
+
       this.animate = false;
       this.specialAttackAnimationForUser();
-     
+
       setTimeout(() => {
-        this.monsterAttack();
-        setTimeout(() => {this.specialAttackAnimationForMonster();},1000);
+
+        this.animate = true;
+        this.isFighting = false;
+        this.isAttack = false; // user attacking
+        this.isAttacked = true; // monster being attacked
+        setTimeout(() => {
+          this.specialAttackAnimationForMonster();
+
+          this.monsterDamage = getRandomValue(10, 20);
+          this.userHeart -= this.monsterDamage;
+        }
+
+          , 1000);
       }, 1290);
+
     },
+
     surrender() {
       this.userHeart = 0;
     },
-    specialAttackAnimationForUser(){
+    specialAttackAnimationForUser() {
       this.isBigger = true;
-      setTimeout(() => {this.isBigger = false},2000)
-      setTimeout(() => {this.isAttack = true},900)
-      setTimeout(() => {this.isAttack = false},2000)
+      setTimeout(() => { this.isBigger = false }, 2000);
+      setTimeout(() => { this.isAttack = true }, 900);
+      setTimeout(() => { this.isAttack = false }, 2000);
       this.isSlide = true;
     },
-    specialAttackAnimationForMonster(){
+    specialAttackAnimationForMonster() {
       this.isAppear = true;
-      setTimeout(() => {this.isFire = true}, 50)
-      setTimeout(() => {this.isAppear = false}, 1800)     
-      setTimeout(() => {this.isUserDameged = true},1500)
-      setTimeout(() => {this.isUserDameged = false},2200)
+      setTimeout(() => { this.isFire = true }, 50);
+      setTimeout(() => { this.isAppear = false }, 1800);
+      setTimeout(() => { this.isUserDamaged = true }, 1500);
+      setTimeout(() => { this.isUserDamaged = false }, 2200);
     },
-    startGame(e){
+    startGame(e) {
       this.styleOverlayTop.left = '-100%';
       this.styleOverlayBottom.right = '-100%';
       this.styleStartTop.left = '-100%';
@@ -129,30 +152,25 @@ const app = Vue.createApp({
       return this.round < 1;
     },
     canUseSpecialAttack() {
-      return this.round % 3 !== 0;
+      // Special attack enabled only if user's health drops below 50%
+      return this.userHeart < 70;
     },
-    headleEnd1() {
+    handleEnd1() {
       if (this.monsterHeart <= 0) {
         this.monsterHeart = 0;
         return true;
       }
       return false;
     },
-    headleEnd2() {
+    handleEnd2() {
       if (this.userHeart <= 0) {
         this.userHeart = 0;
         return true;
       }
       return false;
     },
-    handlebtn() {
-      if (this.userHeart <= 0 || this.monsterHeart <= 0) {
-        return false;
-      } else {
-        return true;
-      }
+    handleBtn() {
+      return this.userHeart > 0 && this.monsterHeart > 0;
     },
   },
 });
-
-app.mount("#app");

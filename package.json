@@ -1,0 +1,18 @@
+{
+  "name": "vue-minigame",
+  "version": "1.0.0",
+  "description": "A mini-game built with Vue.js",
+  "main": "index.js",
+  "scripts": {
+    "start": "vite"
+  },
+"dependencies": {
+  "vue": "^2.6.14",
+  "vue-router": "^3.5.3",
+  "vuex": "^3.6.2"},
+"devDependencies": {
+    "vite": "^2.9.0"
+  }
+}
+
+

@@ -29,7 +29,7 @@
           <div class="heart-wrap">
             <div :style="{width: userHeart + '%'}" class="heart"></div>
           </div>
-          <img src="./images/user-01.png" class="warrior-img" :class="{attack: isAttack, damged: isUserDameged}" alt="">
+          <img src="./images/user-01.png" class="warrior-img" :class="{attack: isAttack, damged: isUserDamaged}" alt="">
           <img class="bubble" v-for="n in 10" src="images/health-icon-removebg-preview.png" :class="[{active: isActiveBubble},`x${n}`]" alt="">
           <img src="images/kiem-01.png" class="sword" :class="{'bigUp': isBigger, 'active': isSlide}" alt="">
         </div>
@@ -43,23 +43,24 @@
         </div>
       </div>
       <div class="controls" >
-        <button v-if="!isFighting" @click="userAttack" v-show="handlebtn">Attack</button>
-        <button v-if="!isFighting" :disabled="canUseBuff" @click="userBuff" v-show="handlebtn">Buff</button>
-        <button v-if="!isFighting" :disabled="canUseSpecialAttack" @click="specialAttackMonster" v-show="handlebtn">Special attack</button>
-        <button v-if="!isFighting" @click="surrender" v-show="handlebtn">Surrender</button>
+        <button v-if="!isFighting" v-show="handleBtn" @click="userAttack" >Attack</button>
+        <button v-if="!isFighting" v-show="handleBtn"  :disabled="canUseBuff" @click="userBuff" >Buff</button>
+        <button v-if="!isFighting"  v-show="handleBtn"  :disabled="!canUseSpecialAttack" @click="specialAttackMonster" >Special attack</button>
+        <button v-if="!isFighting" v-show="handleBtn"  @click="surrender" >Surrender</button>
       </div>
-      <div class="end-game" v-if="headleEnd1">
+      <div class="end-game" v-if="handleEnd1">
         <img src="./images/winner-01.png" alt="">
         <button @click="startNewGame">Start New Game</button>
       </div>
-      <div class="end-game2" v-else-if="headleEnd2">
+      <div class="end-game2" v-else-if="handleEnd2">
         <img src="./images/loser-01.png" alt="">
         <button @click="startNewGame">Start New Game</button>
       </div>
     </div>
   </div>
-  <script src="https://unpkg.com/vue@next"></script>
-  <script src="app.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+<script src="app.js"></script>
+
 </body>
 
 </html>
